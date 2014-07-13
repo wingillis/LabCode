@@ -48,6 +48,7 @@ OUTPUT_FOLDER = os.path.join(cwd, OUTPUT_FOLDER)
 if not os.path.exists(OUTPUT_FOLDER):
     os.makedirs(OUTPUT_FOLDER)
 
+imagePath = os.path.join(OUTPUT_FOLDER, weekFolder)
 
 if not os.path.exists(imagePath):
     os.makedirs(imagePath)
