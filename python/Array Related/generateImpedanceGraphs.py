@@ -36,14 +36,17 @@ import glob, datetime, os, shutil, zipfile
 #       .txt files and the new data collected
 #
 
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
+
 OUTPUT_FOLDER = 'processedData'
 today = datetime.datetime.today()
 monday = today - datetime.timedelta(today.weekday())
 friday = monday + datetime.timedelta(4)
 weekFolder = monday.date().isoformat() + ' to ' + friday.date().isoformat()
 
-cwd = os.path.dirname(os.path.realpath(__file__))
-OUTPUT_FOLDER = os.path.join(cwd, OUTPUT_FOLDER)
 
 if not os.path.exists(OUTPUT_FOLDER):
     os.makedirs(OUTPUT_FOLDER)
