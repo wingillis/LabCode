@@ -42,7 +42,7 @@ monday = today - datetime.timedelta(today.weekday())
 friday = monday + datetime.timedelta(4)
 weekFolder = monday.date().isoformat() + ' to ' + friday.date().isoformat()
 
-cwd = os.path.abspath()
+cwd = os.path.dirname(os.path.realpath(__file__))
 OUTPUT_FOLDER = os.path.join(cwd, OUTPUT_FOLDER)
 
 if not os.path.exists(OUTPUT_FOLDER):
