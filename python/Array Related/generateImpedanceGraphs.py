@@ -8,7 +8,7 @@ Built by Winthrop Gillis 7.11.2014
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import glob, datetime, os, shutil
+import glob, datetime, os, shutil, zipfile
 
 #This script runs in the current directory. It runs through all the files 
 #in the current directory, and reads in files that end in the .txt
@@ -89,9 +89,9 @@ def plotFig(dataFrame, filename, number):
     
     ax = dataFrame.plot(kind='bar', title = files[number][:-4] + ' - ' + demKeys[0], legend=False, ylim=[0,3], color='r')
     #print dataFrame.std()
-    ax.text(len(dataFrame.index) - 7, 2 , 'Std: ' + str(dataFrame.std().item())[:5], fontsize=13)
-    ax.text(len(dataFrame.index) - 7, 1.8, 'Average: ' + str(dataFrame.mean().item())[:5], fontsize=13)
-    ax.text(len(dataFrame.index) - 10, 1.6 , 'Avg of channels w/ <5MOhms: ' + str(smallAvg)[:5], fontsize=13)
+    ax.text(len(dataFrame.index) - 7, 2.8, 'Std: ' + str(dataFrame.std().item())[:5], fontsize=13)
+    ax.text(len(dataFrame.index) - 7, 2.6, 'Average: ' + str(dataFrame.mean().item())[:5], fontsize=13)
+    ax.text(len(dataFrame.index) - 10, 2.4 , 'Avg of channels w/ <5MOhms: ' + str(smallAvg)[:5], fontsize=13)
     ax.set_xlabel('Channels')
     ax.set_ylabel(demKeys[0])
 
@@ -107,6 +107,12 @@ def moveTextFiles():
     for f in files:
         shutil.move(f, os.path.join(txtPath, f))
 
+def zipdir(path, foldername):
+    with zipfile.ZipFile(foldername + '.zip', 'w') as z:
+        for root, dirs, files in os.walk(path):
+            for f in files:
+                z.write(os.path.join(root, f))
+    
 
 dataFrames, files = importFiles()
 
@@ -114,3 +120,5 @@ for index, (frame, fil) in enumerate(zip(dataFrames, files)):
     plotFig(frame, fil, index)
 
 moveTextFiles()
+
+zipdir(os.path.join(OUTPUT_FOLDER, weekFolder), weekFolder)
