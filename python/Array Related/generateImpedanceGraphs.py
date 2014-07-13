@@ -110,8 +110,8 @@ def moveTextFiles():
     for f in files:
         shutil.move(f, os.path.join(txtPath, f))
 
-def zipdir(path, foldername):
-    with zipfile.ZipFile(foldername + '.zip', 'w') as z:
+def zipdir(path):
+    with zipfile.ZipFile(path + '.zip', 'w') as z:
         for root, dirs, files in os.walk(path):
             for f in files:
                 z.write(os.path.join(root, f))
@@ -124,4 +124,4 @@ for index, (frame, fil) in enumerate(zip(dataFrames, files)):
 
 moveTextFiles()
 
-zipdir(os.path.join(OUTPUT_FOLDER, weekFolder), weekFolder)
+zipdir(imagePath)
