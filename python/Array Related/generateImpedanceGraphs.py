@@ -9,6 +9,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import glob, datetime, os, shutil, zipfile
+import smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEBase import MIMEBase
+from email.MIMEText import MIMEText
+from email import Encoders
+from emailVars import em, passw
 
 #This script runs in the current directory. It runs through all the files 
 #in the current directory, and reads in files that end in the .txt
@@ -35,6 +41,11 @@ import glob, datetime, os, shutil, zipfile
 #       will be a formatted .csv file that contains all the data from the 
 #       .txt files and the new data collected
 #
+
+# TODO:
+#     - add a function to email the attachment automatically
+#     - add a figure of average channel values and std
+#     - comment code so that others know how it works
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -86,7 +97,6 @@ def importFiles():
     return [readFile(f) for f in files], files
 
 def plotFig(dataFrame, filename, number):
-    #dataFrame = dataFrame.append(dataFrame.mean(), ignore_index=True)
     demKeys = dataFrame.keys()
     dataFrame = pd.DataFrame(data=dataFrame[demKeys[0]], index=dataFrame.index)
 
@@ -119,6 +129,24 @@ def zipdir(path):
             for f in files:
                 z.write(os.path.join(root, f))
     
+def sendEmail(recipient):
+    msg = MIMEMultipart()
+    msg['Subject'] = 'Zip folder test'
+    msg['To'] = recipient
+    msg['From'] = em
+    msg.attach(MIMEText('Here is the data for this week: '))
+    attach = MIMEBase('application', 'zip')
+    with open('2014-07-14 to 2014-07-18.zip', 'rb') as r:
+        attach.set_payload(r.read())
+    Encoders.encode_base64(attach)
+    attach.add_header('Content-Disposition', 'attachment', filename='2014-07-14 to 2014-07-18.zip')
+    msg.attach(attach)
+    s = smtplib.SMTP('smtp.gmail.com:587') #465
+    s.starttls()
+    s.login(em, passw)
+    s.sendmail(em, recipient, msg.as_string())
+    s.quit()
+
 
 dataFrames, files = importFiles()
 
