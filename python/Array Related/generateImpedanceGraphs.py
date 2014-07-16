@@ -4,11 +4,16 @@ Spyder Editor
 
 Built by Winthrop Gillis 7.11.2014
 """
+import os
+
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import glob, datetime, os, shutil, zipfile
+import glob, datetime, shutil, zipfile
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
@@ -47,9 +52,7 @@ from emailVars import em, passw
 #     - add a figure of average channel values and std
 #     - comment code so that others know how it works
 
-abspath = os.path.abspath(__file__)
-dname = os.path.dirname(abspath)
-os.chdir(dname)
+
 
 
 OUTPUT_FOLDER = 'processedData'
@@ -136,7 +139,7 @@ def sendEmail(recipient):
     msg['From'] = em
     msg.attach(MIMEText('Here is the data for this week: '))
     attach = MIMEBase('application', 'zip')
-    with open('2014-07-14 to 2014-07-18.zip', 'rb') as r:
+    with open(imagePath + '.zip', 'rb') as r:
         attach.set_payload(r.read())
     Encoders.encode_base64(attach)
     attach.add_header('Content-Disposition', 'attachment', filename='2014-07-14 to 2014-07-18.zip')
@@ -156,3 +159,6 @@ for index, (frame, fil) in enumerate(zip(dataFrames, files)):
 moveTextFiles()
 
 zipdir(imagePath)
+
+sendEmail('wgillis@bu.edu')
+sendEmail('timothyg@bu.edu')
