@@ -4,21 +4,34 @@ Spyder Editor
 
 Built by Winthrop Gillis 7.11.2014
 """
+# change this to True when trying to imporove upon the code
+DEBUG = True
+
+
 import os
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-import numpy as np
+#import numpy as np # no need for numpy
+
+# plotting library
 import matplotlib.pyplot as plt
+
+# data management library
 import pandas as pd
-import glob, datetime, shutil, zipfile
-import smtplib
+
+# utility libraries
+import glob, datetime, shutil, zipfile, smtplib
+
+# classes to build an email message
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
 from email.MIMEText import MIMEText
 from email import Encoders
+
+# contains the email and password to the gardner lab gmail account
 from emailVars import em, passw
 
 #This script runs in the current directory. It runs through all the files 
@@ -160,5 +173,8 @@ moveTextFiles()
 
 zipdir(imagePath)
 
+
 sendEmail('wgillis@bu.edu')
-sendEmail('timothyg@bu.edu')
+
+if not DEBUG:
+    sendEmail('timothyg@bu.edu')
