@@ -35,7 +35,7 @@ Built by Winthrop Gillis 7.11.2014
 #     - comment code so that others know how it works
 """
 # change this to True when trying to imporove upon the code
-DEBUG = True
+DEBUG = False
 
 import os
 
@@ -193,7 +193,7 @@ def sendEmail(recipient, empty=False):
         s.sendmail(em, recipient, msg.as_string())
         s.quit()
     else:
-        msg = MIMEText('No arrays were impedance tested this week. (Or at least their text files weren\'t put into this folder.')
+        msg = MIMEText('No arrays were impedance tested this week. (Or at least their text files weren\'t put into this folder.)\n\nThis is an automated script made by Win')
         msg['Subject'] = 'No impedance values this week'
         msg['To'] = recipient
         msg['From'] = em
