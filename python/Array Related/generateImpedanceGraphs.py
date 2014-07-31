@@ -131,10 +131,12 @@ def plotFig(dataFrame, filename, number):
     # returns a list of datapoints that have impedance values below 5 MOhms
     lessThan5 = [x for x in dataFrame[demKeys[0]] if x < 5]
     # average impedances for fibers with less than 5 MOhm impedances
-    smallAvg = sum(lessThan5)/ len(lessThan5)
-    
+    try:
+	    smallAvg = sum(lessThan5)/ len(lessThan5)
+    except Exception as e:
+    	smallAvg = 1
     # actually plots the data
-    ax = dataFrame.plot(kind='bar', title = files[number][:-4] + ' - ' + demKeys[0], legend=False, ylim=[0,3], color='r')
+    ax = dataFrame.plot(kind='bar', title = files[number][:-4] + ' - ' + demKeys[0], legend=False, ylim=[0,4], color='r')
     #print dataFrame.std()
     # add informative text onto the figure
     ax.text(len(dataFrame.index) - 7, 2.8, 'Std: ' + str(dataFrame.std().item())[:5], fontsize=13)
@@ -217,13 +219,17 @@ if files:
     zipdir(imagePath)
 
     if DEBUG:
-        sendEmail('wgillis@bu.edu')
+        #sendEmail('wgillis@bu.edu')
+        pass
 
     else:
         sendEmail('timothyg@bu.edu')
+        
 else:
     if DEBUG:
-        sendEmail('wgillis@bu.edu', empty = True)
+        #sendEmail('wgillis@bu.edu', empty = True)
+        pass
     else: 
         sendEmail('timothyg@bu.edu', empty = True)
+        
     # send an email saying there were no arrays that were tested in this week
